@@ -1,0 +1,58 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+<link href="{% static 'css/styles.css' %}" rel="stylesheet" type="text/css" />
+<!-- Include Noto Sans CJK SC for a clean, modern font -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@700&display=swap" rel="stylesheet">
+
+{% block content %}
+<h2 style="text-align: center; margin-top: 20px">Image Stitching Tool</h2>
+
+<!-- Upload Form -->
+<form action="{% url 'image_stitching' %}" method="post" enctype="multipart/form-data" style="text-align: center; margin-bottom: 20px;">
+    {% csrf_token %}
+    <label for="image1">Choose Image 1:</label>
+    <input type="file" name="image1" id="image1" required>
+    <br><br>
+    <label for="image2">Choose Image 2:</label>
+    <input type="file" name="image2" id="image2" required>
+    <br><br>
+    <input type="submit" value="Stitch Images">
+</form>
+
+<!-- Display Error Message or Stitched Image -->
+<div style="text-align: center; margin-top: 20px; background-color: white; padding: 20px; border-radius: 10px;">
+    {% if message %}
+        <h3 style="color: red;">{{ message }}</h3>
+    {% elif result_base64 %}
+        <h3>Stitched Image Result</h3>
+        <canvas id="stitchedImageCanvas" style="max-width: 70%; height: auto; border: 1px solid #ccc; border-radius: 5px;"></canvas>
+    {% endif %}
+</div>
+
+<!-- JavaScript for dynamically updating the stitched image -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        {% if result_base64 %}
+            // Display the stitched image on the canvas
+            var canvas = document.getElementById('stitchedImageCanvas');
+            var ctx = canvas.getContext('2d');
+            var img = new Image();
+            img.onload = function() {
+                // Resize canvas with a scaling factor, e.g., 50% of original size
+                var scaleFactor = 0.5;  // Adjust scale factor as desired
+                canvas.width = img.width * scaleFactor;
+                canvas.height = img.height * scaleFactor;
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            };
+            img.src = 'data:image/jpeg;base64,{{ result_base64 }}';
+        {% else %}
+            // Display placeholder text if no image
+            var ctx = document.getElementById('stitchedImageCanvas').getContext('2d');
+            ctx.font = '20px Noto Sans SC';
+            ctx.textAlign = 'center';
+            ctx.fillText('Upload images and click "Stitch Images" to view the result here.', canvas.width / 2, canvas.height / 2);
+        {% endif %}
+    });
+</script>
+{% endblock %}
