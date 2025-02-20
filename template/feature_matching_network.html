@@ -1,0 +1,19 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+<link href="{% static 'css/styles.css' %}" rel="stylesheet" type="text/css" />
+
+{% block content %}
+<h2 style="text-align: center; margin-top: 20px">Matching Points Visualization</h2>
+
+<!-- Display the matching points visualization -->
+{% if image_base64 %}
+<div style="text-align: center; margin-top: 20px; background-color: white; padding: 20px; border-radius: 10px;">
+    <h3>Matching Points Between Images</h3>
+    <img src="data:image/jpeg;base64,{{ image_base64 }}" alt="Matching Points" style="width: 90%; max-width: 800px; height: auto; border: 1px solid #ccc; border-radius: 5px;">
+</div>
+{% else %}
+<p style="text-align: center; color: gray; margin-top: 20px;">No matching points visualization available. Please upload images in the Image Stitching section first.</p>
+{% endif %}
+
+{% endblock %}

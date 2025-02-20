@@ -1,0 +1,19 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+<link href="{% static 'css/styles.css' %}" rel="stylesheet" type="text/css" />
+
+{% block content %}
+<h2 style="text-align: center; margin-top: 20px">Hypothesis Test for Image Stitching</h2>
+
+<div style="text-align: center; margin-top: 20px;">
+    {% if ttest_plot_base64 %}
+    <img src="data:image/png;base64,{{ ttest_plot_base64 }}" alt="Hypothesis Test Plot" style="width: 80%; max-width: 800px; height: auto; border: 1px solid #ccc; border-radius: 5px;">
+    <p><strong>Result:</strong> {{ result }}</p>
+    <p><strong>p-value:</strong> {{ p_value }}</p>
+    {% else %}
+    <p style="color: gray;">No hypothesis test data available. Please upload images and process them first.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

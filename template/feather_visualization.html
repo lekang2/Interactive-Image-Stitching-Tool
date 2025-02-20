@@ -1,0 +1,29 @@
+{% extends "base_generic.html" %}
+{% load static custom_filters %} <!-- 加载自定义过滤器 -->
+
+<link href="{% static 'css/styles.css' %}" rel="stylesheet" type="text/css" />
+
+{% block content %}
+<h2 style="text-align: center; margin-top: 20px">Feature Points Analysis</h2>
+
+<!-- Display Scatter Plot of Feature Points -->
+{% if scatter_plot_base64 %}
+<div style="text-align: center; margin-top: 20px; background-color: white; padding: 20px; border-radius: 10px;">
+    <h3>Scatter Plot of Feature Points</h3>
+    <img src="data:image/png;base64,{{ scatter_plot_base64 }}" alt="Scatter Plot of Feature Points" style="width: 80%; max-width: 800px; height: auto;">
+</div>
+{% else %}
+<p style="text-align: center; color: gray; margin-top: 20px;">Scatter plot data unavailable.</p>
+{% endif %}
+
+<!-- Display Histogram of SIFT Descriptor Components -->
+{% if histogram_base64 %}
+<div style="text-align: center; margin-top: 20px; background-color: white; padding: 20px; border-radius: 10px;">
+    <h3>Histogram of SIFT Descriptor Components</h3>
+    <img src="data:image/png;base64,{{ histogram_base64 }}" alt="Histogram of SIFT Descriptor Components" style="width: 80%; max-width: 800px; height: auto;">
+</div>
+{% else %}
+<p style="text-align: center; color: gray; margin-top: 20px;">Histogram data unavailable.</p>
+{% endif %}
+
+{% endblock %}
